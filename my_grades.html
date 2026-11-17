@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}<h1>Điểm của tôi</h1><p class="muted">Sinh viên chỉ xem được kết quả gắn với hồ sơ cá nhân.</p>
+<div class="panel table-wrap"><table><thead><tr><th>Học phần</th><th>Lớp</th><th>Học kỳ</th><th>Năm học</th><th>Điểm thành phần</th><th>Tổng kết</th></tr></thead><tbody>
+{% for enrollment, final in results %}<tr><td>{{ enrollment.course_section.course.course_name }}</td><td>{{ enrollment.course_section.section_code }}</td><td>{{ enrollment.course_section.semester }}</td><td>{{ enrollment.course_section.academic_year }}</td><td>{% for grade in enrollment.grades.all %}{{ grade.component.component_name }}: {{ grade.score }}{% if not forloop.last %}; {% endif %}{% empty %}Chưa có điểm{% endfor %}</td><td>{{ final|default:"Chưa đủ điểm" }}</td></tr>{% empty %}<tr><td colspan="6" class="empty">Chưa liên kết tài khoản với hồ sơ sinh viên hoặc chưa có đăng ký học phần.</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}

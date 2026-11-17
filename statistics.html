@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}<h1>Thống kê kết quả học tập</h1><p class="muted">Ngưỡng đạt mặc định: điểm tổng kết từ 4.00 trở lên.</p>
+<div class="cards">
+<div class="stat"><span>Lượt đăng ký</span><strong>{{ total }}</strong><small>Tổng số bản ghi được lọc</small></div>
+<div class="stat"><span>Đã đủ điểm</span><strong>{{ complete }}</strong><small>Có đủ thành phần điểm</small></div>
+<div class="stat"><span>Chưa đủ điểm</span><strong>{{ missing }}</strong><small>Chưa thể tính tổng kết</small></div>
+<div class="stat"><span>Điểm trung bình</span><strong>{{ average|default:"—" }}</strong><small>Trên thang 10</small></div>
+<div class="stat"><span>Sinh viên đạt</span><strong>{{ passed }}</strong><small>Điểm từ 4.00</small></div>
+<div class="stat"><span>Sinh viên chưa đạt</span><strong>{{ failed }}</strong><small>Điểm dưới 4.00</small></div>
+<div class="stat"><span>Tỷ lệ đạt</span><strong>{{ pass_rate|default:"—" }}{% if pass_rate != None %}%{% endif %}</strong><small>Tính trên lượt đã đủ điểm</small></div>
+</div><div class="panel"><p><strong>Ghi chú:</strong> Đây là thống kê theo các bộ lọc hiện hành. Giảng viên chỉ thấy lớp được phân công; giáo vụ và quản trị xem toàn bộ.</p><a class="btn primary" href="{% url 'grading:search' %}">Đến trang tìm kiếm</a></div>{% endblock %}

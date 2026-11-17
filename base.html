@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Quản lý sinh viên và điểm số{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{% url 'dashboard' %}">QUẢN LÝ SINH VIÊN & ĐIỂM SỐ</a>
+  {% if user.is_authenticated %}
+  <div class="userbox"><span>{{ user.username }} · {{ user.get_role_display }}</span>
+    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="link-button" type="submit">Đăng xuất</button></form>
+  </div>
+  {% endif %}
+</header>
+{% if user.is_authenticated %}
+<nav class="nav">
+  <a href="{% url 'dashboard' %}">Tổng quan</a>
+  {% if user.is_superuser or user.role == 'ADMIN' or user.role == 'ACADEMIC_STAFF' %}
+  <a href="{% url 'students:list' %}">Sinh viên</a>
+  <a href="{% url 'academics:courses' %}">Học phần</a>
+  <a href="{% url 'academics:sections' %}">Lớp học phần</a>
+  <a href="{% url 'enrollments:list' %}">Đăng ký</a>
+  {% endif %}
+  {% if user.role == 'LECTURER' or user.role == 'ACADEMIC_STAFF' or user.role == 'ADMIN' or user.is_superuser %}
+  <a href="{% url 'grading:home' %}">Quản lý điểm</a>
+  <a href="{% url 'grading:search' %}">Tìm kiếm điểm</a>
+  <a href="{% url 'grading:statistics' %}">Thống kê</a>
+  {% endif %}
+  {% if user.role == 'STUDENT' %}
+  <a href="{% url 'grading:my_grades' %}">Điểm của tôi</a>
+  {% endif %}
+</nav>
+{% endif %}
+<main class="container">
+  {% for message in messages %}<div class="alert {{ message.tags }}">{{ message }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Đồ án 1 · Chủ đề 03 · Phiên bản demo mốc 1</footer>
+</body></html>

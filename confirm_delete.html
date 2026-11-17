@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block title %}Xác nhận xóa{% endblock %}
+{% block content %}<section class="panel narrow"><h1>Xác nhận xóa hồ sơ</h1><p>Bạn có chắc muốn xóa <strong>{{ student.student_code }} - {{ student.full_name }}</strong>?</p><p class="muted">Sinh viên đã có Enrollment sẽ không thể xóa để bảo toàn lịch sử dữ liệu.</p><form method="post">{% csrf_token %}<div class="actions"><button class="btn danger" type="submit">Xác nhận xóa</button><a class="btn light" href="{% url 'students:list' %}">Hủy</a></div></form></section>{% endblock %}

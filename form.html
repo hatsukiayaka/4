@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block title %}{{ title }}{% endblock %}
+{% block content %}<section class="panel narrow"><h1>{{ title }}</h1>
+<form method="post">{% csrf_token %}{{ form.non_field_errors }}
+{% for field in form %}<label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="field-error">{{ field.errors }}</div>{% endif %}{% endfor %}
+<div class="actions"><button class="btn primary" type="submit">Lưu</button><a class="btn light" href="{% url 'students:list' %}">Hủy</a></div></form></section>{% endblock %}

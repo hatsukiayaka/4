@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Quản lý điểm{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Quản lý điểm</h1><p class="muted">Chọn lớp học phần để cấu hình thành phần điểm và nhập điểm.</p></div></div>
+<div class="panel table-wrap"><table><thead><tr><th>Học phần</th><th>Lớp</th><th>Học kỳ</th><th>Năm học</th><th>Giảng viên</th><th></th></tr></thead><tbody>
+{% for s in sections %}<tr><td>{{ s.course.course_code }} – {{ s.course.course_name }}</td><td>{{ s.section_code }}</td><td>{{ s.semester }}</td><td>{{ s.academic_year }}</td><td>{{ s.teacher_user|default:"Chưa phân công" }}</td><td><a href="{% url 'grading:gradebook' s.pk %}">Mở bảng điểm</a></td></tr>{% empty %}<tr><td colspan="6" class="empty">Chưa có lớp học phần được phân công.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}\n{% load grading_tags %}
+{% block title %}Bảng điểm{% endblock %}
+{% block content %}
+<div class="page-head"><div><h1>Bảng điểm – {{ section.course.course_name }}</h1><p class="muted">{{ section.section_code }} · Học kỳ {{ section.semester }} · {{ section.academic_year }}</p></div>
+<a class="btn" href="{% url 'grading:home' %}">Quay lại</a></div>
+<div class="panel">
+<h2>Cấu hình thành phần điểm</h2>
+<p>Tổng trọng số: <strong>{{ weight_total }}%</strong> {% if weight_valid %}<span class="status-ok">Đã đủ 100%</span>{% else %}<span class="status-bad">Phải bằng 100% mới tính điểm tổng kết</span>{% endif %}</p>
+<div class="table-wrap"><table><thead><tr><th>Thành phần</th><th>Trọng số</th><th>Thứ tự</th></tr></thead><tbody>
+{% for c in components %}<tr><td>{{ c.component_name }}</td><td>{{ c.weight_percent }}%</td><td>{{ c.position }}</td></tr>{% empty %}<tr><td colspan="3" class="empty">Chưa cấu hình thành phần điểm.</td></tr>{% endfor %}
+</tbody></table></div>
+<a class="btn primary" href="{% url 'grading:component_create' section.pk %}">+ Thêm thành phần điểm</a>
+</div>
+<div class="panel"><h2>Danh sách điểm sinh viên</h2><div class="table-wrap"><table><thead><tr><th>Mã SV</th><th>Họ tên</th>{% for c in components %}<th>{{ c.component_name }} ({{ c.weight_percent }}%)</th>{% endfor %}<th>Tổng kết</th><th>Thao tác</th></tr></thead><tbody>
+{% for row in rows %}<tr><td>{{ row.enrollment.student.student_code }}</td><td>{{ row.enrollment.student.full_name }}</td>{% for c in components %}<td>{{ row.grade_map|get_item:c.pk|default:"—" }}</td>{% endfor %}<td><strong>{{ row.final_score|default:"Chưa đủ điểm" }}</strong></td><td>{% if components %}<a href="{% url 'grading:grade_entry' section.pk row.enrollment.pk %}">Nhập / sửa điểm</a>{% endif %}</td></tr>{% empty %}<tr><td colspan="20" class="empty">Chưa có sinh viên đăng ký.</td></tr>{% endfor %}
+</tbody></table></div></div>
+{% endblock %}

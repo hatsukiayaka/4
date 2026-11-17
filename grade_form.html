@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block content %}<div class="panel narrow"><h1>Nhập / sửa điểm</h1><p class="muted">{{ enrollment.student.student_code }} – {{ enrollment.student.full_name }} · {{ section.section_code }}</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}<div class="actions"><button class="btn primary" type="submit">Lưu điểm</button><a class="btn" href="{% url 'grading:gradebook' section.pk %}">Hủy</a></div></form></div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}<div class="page-head"><div><h1>Tìm kiếm kết quả học tập</h1><p class="muted">Có thể kết hợp từ khóa, học phần, học kỳ và năm học.</p></div></div>
+<div class="panel"><form method="get" class="filter-grid">
+<div><label>Từ khóa (mã/tên SV, lớp, học phần)</label><input name="q" value="{{ filters.q }}"></div>
+<div><label>Học phần</label><select name="course"><option value="">Tất cả</option>{% for c in courses %}<option value="{{ c.pk }}" {% if filters.course == c.pk|stringformat:"s" %}selected{% endif %}>{{ c.course_code }} – {{ c.course_name }}</option>{% endfor %}</select></div>
+<div><label>Học kỳ</label><input name="semester" value="{{ filters.semester }}" placeholder="Ví dụ: 1"></div>
+<div><label>Năm học</label><input name="year" value="{{ filters.year }}" placeholder="2026-2027"></div>
+<div class="actions"><button class="btn primary" type="submit">Tìm kiếm</button><a class="btn" href="{% url 'grading:search' %}">Xóa lọc</a><a class="btn" href="{% url 'grading:export_csv' %}?{{ request.GET.urlencode }}">Xuất CSV</a></div></form></div>
+<div class="panel table-wrap"><table><thead><tr><th>Mã SV</th><th>Họ tên</th><th>Học phần</th><th>Lớp</th><th>HK/Năm</th><th>Điểm tổng kết</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.enrollment.student.student_code }}</td><td>{{ r.enrollment.student.full_name }}</td><td>{{ r.enrollment.course_section.course.course_name }}</td><td>{{ r.enrollment.course_section.section_code }}</td><td>{{ r.enrollment.course_section.semester }}/{{ r.enrollment.course_section.academic_year }}</td><td>{{ r.final|default:"Chưa đủ điểm" }}</td></tr>{% empty %}<tr><td colspan="6" class="empty">Không tìm thấy kết quả.</td></tr>{% endfor %}
+</tbody></table></div>{% endblock %}
